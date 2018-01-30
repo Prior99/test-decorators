@@ -1,6 +1,6 @@
 {
   "name": "test-decorators",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A set of decorators to run js unit tests with.",
   "main": "dist/index.js",
   "author": "Frederick Gnodtke",

@@ -1,6 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`\`test\` calling the test when configured with \`params\` 1`] = `Array []`;
+exports[`\`test\` calling the test when configured with \`params\` 1`] = `
+Array [
+  Array [
+    Object {
+      "a": 1,
+      "b": 2,
+    },
+  ],
+  Array [
+    Object {
+      "a": 3,
+      "b": 4,
+    },
+  ],
+]
+`;
 
 exports[`\`test\` calling the test when configured without \`params\` 1`] = `
 Array [

@@ -56,7 +56,7 @@ export function test<Params>(
         // If `params` was not specified, call `it` once with no parameters.
         if (!params) {
             tests.push(instance => {
-                itFunction(name(), async (...args: any[]) => await descriptor.value.apply(instance, ...args))
+                itFunction(name(), async (...args: any[]) => await descriptor.value.apply(instance, args))
             })
             return descriptor
         }
@@ -65,7 +65,7 @@ export function test<Params>(
             return (instance: any) => {
                 itFunction(
                     name(param),
-                    async (...args: any[]) => await descriptor.value.apply(instance, param, ...args),
+                    async (...args: any[]) => await descriptor.value.apply(instance, [param, ...args]),
                 )
             }
         }))

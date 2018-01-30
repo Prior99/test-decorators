@@ -85,7 +85,10 @@ describe("`test`", () => {
         class A {
             @testDecorator({
                 name: (param) => `some name #${param}`,
-                params: [1, 2],
+                params: [
+                    { a: 1, b: 2 },
+                    { a: 3, b: 4 },
+                ],
             })
             private testSomething(...args: any[]) { mockTestImpl(...args) }
         }

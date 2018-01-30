@@ -176,18 +176,9 @@ yarn lint
 
 ### Starting the example
 
-Server:
-
 ```
-cd exmaple
-yarn run:server
-```
-
-Client:
-
-```
-cd exmaple
-yarn run:client
+cd example
+yarn test
 ```
 
 ## Contributors

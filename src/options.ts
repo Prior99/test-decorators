@@ -1,6 +1,16 @@
 export interface TestOptions<Params> {
+    /**
+     * The name of the test or a function being handed the parameters of a parameterized test
+     * which generates the name.
+     */
     name?: string | ((params?: Params) => string)
+    /**
+     * An optional array of parameters. For each of these parameters a new test is executed.
+     */
     params?: Params[],
+    /**
+     * When set to `true` the `itOnly` function will be called instead of the `it` function for this test.
+     */
     only?: boolean
 }
 
@@ -12,6 +22,14 @@ export interface PreparedTestOptions<Params> {
     only: boolean,
 }
 
+/**
+ * Validates and prepares the test options as handed to the decorator to be able
+ * to operate on them fearlessly inside the `@test` function.
+ *
+ * @param options The options as provided by the user.
+ *
+ * @return The validated and prepared options for `@test`.
+ */
 export function parseTestOptions<Params>(options?: TestOptionsInput<Params>): PreparedTestOptions<Params> {
     if (typeof options === "string") {
         return {
@@ -42,6 +60,13 @@ export function parseTestOptions<Params>(options?: TestOptionsInput<Params>): Pr
     return { name, params, only }
 }
 
+/**
+ * Checks that the provided object is compatible with the `TestOptionsInput` interface.
+ *
+ * @param input Anything.
+ *
+ * @return `true if the input is compatible and `false` otherwise.
+ */
 export function isTestOptionsInput<Params>(input: any): input is TestOptionsInput<Params> {
     const validKeys = ["name", "params", "only"]
     if (!input) { return false }
@@ -52,7 +77,13 @@ export function isTestOptionsInput<Params>(input: any): input is TestOptionsInpu
 }
 
 export interface SuiteOptions {
+    /**
+     * The name of the suite which will be handed to the `describe` function.
+     */
     name?: string
+    /**
+     * If set to `true` the `describeOnly` function will be called instead of the `describe` function.
+     */
     only?: boolean
 }
 
@@ -63,6 +94,14 @@ export interface PreparedSuiteOptions {
     only: boolean
 }
 
+/**
+ * Validates and prepares the suite options as handed to the decorator to be able
+ * to operate on them fearlessly inside the `@suite` function.
+ *
+ * @param options The options as provided by the user.
+ *
+ * @return The validated and prepared options for `@suite`.
+ */
 export function parseSuiteOptions(options?: SuiteOptionsInput): PreparedSuiteOptions {
     if (typeof options === "string") {
         return {
@@ -83,6 +122,13 @@ export function parseSuiteOptions(options?: SuiteOptionsInput): PreparedSuiteOpt
     return { name, only }
 }
 
+/**
+ * Checks that the provided object is compatible with the `SuiteOptionsInput` interface.
+ *
+ * @param input Anything.
+ *
+ * @return `true if the input is compatible and `false` otherwise.
+ */
 export function isSuiteOptionsInput(input: any): input is SuiteOptionsInput {
     const validKeys = ["name", "only"]
     if (!input) { return false }

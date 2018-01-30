@@ -21,6 +21,15 @@ export function test<Params>(
     descriptor: PropertyDescriptor,
 ): PropertyDescriptor
 export function test<Params>(options?: TestOptionsInput<Params>): TestDecorator
+/**
+ * Decorate a method with `@test` or `@test("name of the test")` or @test({ ... })` to
+ * automatically have it run as a test inside an `it` call.
+ *
+ * @param options Can be provided or left out, so the decorator can be called with `@test()` or
+ *                like `@test`. The name of the test or a configuration object. @see TestOptions
+ *
+ * @return The decorated method.
+ */
 export function test<Params>(
     arg1: Object | TestOptionsInput<Params>,
     arg2?: string | symbol,

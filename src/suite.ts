@@ -9,6 +9,16 @@ export type Constructable<T> = {
 
 export function suite(options?: SuiteOptionsInput): ClassDecorator
 export function suite<U, T extends Constructable<U>>(Ctor?: T): T
+/**
+ * Decorate a class with `@suite` or `@suite("name of the suite")` or @suite({ ... })` to
+ * automatically run the `@test`-decorated methods inside a `describe` call.
+ * This automatically creates an instance for the decorated class.
+ *
+ * @param options Can be provided or left out, so the decorator can be called with `@suite()` or
+ *                like `@suite`. The name of the suite or a configuration object. @see SuiteOptions
+ *
+ * @return The decorated class.
+ */
 export function suite<U, T extends Constructable<U>>(arg1: T | SuiteOptionsInput) {
     const { describe, describeOnly } = configuration
     if (typeof describe !== "function") {

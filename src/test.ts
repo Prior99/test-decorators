@@ -15,13 +15,13 @@ export function getTests(target: Object): TestFunction[] {
 export type TestDecorator =
     (target: Object, property: string | symbol, descriptor: PropertyDescriptor) => PropertyDescriptor
 
-export function test<Params extends Object>(
+export function test<Params>(
     target: Object,
     property: string | symbol,
     descriptor: PropertyDescriptor,
 ): PropertyDescriptor
-export function test<Params extends Object>(options?: TestOptionsInput<Params>): TestDecorator
-export function test<Params extends Object>(
+export function test<Params>(options?: TestOptionsInput<Params>): TestDecorator
+export function test<Params>(
     arg1: Object | TestOptionsInput<Params>,
     arg2?: string | symbol,
     arg3?: PropertyDescriptor,

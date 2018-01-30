@@ -41,7 +41,7 @@
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "testMatch": [
-      "**/__tests__/*.(ts|ts|js)"
+      "<rootDir>/src/__tests__/*.(ts|js)"
     ],
     "mapCoverage": true
   },

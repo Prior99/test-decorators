@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`\`parseSuiteOptions\` with \`null\` 1`] = `"Suite options can not be null."`;
+
+exports[`\`parseSuiteOptions\` with \`undefined\` 1`] = `"Suite options need to be either a string or an object."`;
+
+exports[`\`parseSuiteOptions\` with a full configuration 1`] = `
+Object {
+  "name": "another suite name",
+  "only": true,
+}
+`;
+
+exports[`\`parseSuiteOptions\` with a number 1`] = `"Suite options need to be either a string or an object."`;
+
+exports[`\`parseSuiteOptions\` with only a name 1`] = `
+Object {
+  "name": "the name of some suite",
+  "only": false,
+}
+`;
+
+exports[`\`parseSuiteOptions\` with only being set to \`true\` 1`] = `
+Object {
+  "name": undefined,
+  "only": true,
+}
+`;
+
+exports[`\`parseSuiteOptions\` with the name being a number 1`] = `"Option 'name' needs to be either a string or a function."`;
+
+exports[`\`parseSuiteOptions\` with the name being undefined 1`] = `
+Object {
+  "name": undefined,
+  "only": undefined,
+}
+`;
+
+exports[`\`parseSuiteOptions\` with the name specified 1`] = `
+Object {
+  "name": "some suite name",
+  "only": undefined,
+}
+`;
+
+exports[`\`parseTestOptions\` with \`null\` 1`] = `"Test options can not be null."`;
+
+exports[`\`parseTestOptions\` with \`undefined\` 1`] = `"Test options need to be either a string or an object."`;
+
+exports[`\`parseTestOptions\` with a full configuration 1`] = `
+Object {
+  "name": [Function],
+  "only": true,
+  "params": Array [
+    1,
+    2,
+    3,
+  ],
+}
+`;
+
+exports[`\`parseTestOptions\` with a number 1`] = `"Test options need to be either a string or an object."`;
+
+exports[`\`parseTestOptions\` with only a name 1`] = `
+Object {
+  "name": [Function],
+  "only": false,
+}
+`;
+
+exports[`\`parseTestOptions\` with only being set to \`true\` 1`] = `
+Object {
+  "name": undefined,
+  "only": true,
+  "params": undefined,
+}
+`;
+
+exports[`\`parseTestOptions\` with the name being a function 1`] = `
+Object {
+  "name": [Function],
+  "only": undefined,
+  "params": undefined,
+}
+`;
+
+exports[`\`parseTestOptions\` with the name being a number 1`] = `"Option 'name' needs to be either a string or a function or undefined."`;
+
+exports[`\`parseTestOptions\` with the name being a string 1`] = `
+Object {
+  "name": [Function],
+  "only": undefined,
+  "params": undefined,
+}
+`;
+
+exports[`\`parseTestOptions\` with the name being undefined 1`] = `
+Object {
+  "name": undefined,
+  "only": undefined,
+  "params": undefined,
+}
+`;
+
+exports[`\`parseTestOptions\` with the params being an array 1`] = `
+Object {
+  "name": undefined,
+  "only": undefined,
+  "params": Array [
+    Object {
+      "a": 1,
+    },
+    Object {
+      "a": 2,
+    },
+    Object {
+      "a": 3,
+    },
+  ],
+}
+`;
+
+exports[`\`parseTestOptions\` with the params being an object which is not an array 1`] = `"Option 'params' needs to be an array."`;

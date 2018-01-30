@@ -11,18 +11,25 @@ export interface ConfigureOptions {
     describeOnly: Describe
 }
 
-declare var global: any
-// Shamelessly adapted from https://github.com/purposeindustries/window-or-global
-const globalOrWindow = (typeof self === "object" && self.self === self && self) ||
-  (typeof global === "object" && global.global === global && global)
-
-export const configuration: ConfigureOptions = {
-    it: (globalOrWindow as any).it,
-    describe: (globalOrWindow as any).describe,
-    describeOnly: (globalOrWindow as any).describe.only,
-    itOnly: (globalOrWindow as any).it.only,
-}
+export let configuration: ConfigureOptions
 
 export function configure(options: ConfigureOptions) {
     Object.assign(configuration, options)
 }
+
+declare var global: any
+
+export function initializeConfiguration() {
+    // Shamelessly adapted from https://github.com/purposeindustries/window-or-global
+    const globalOrWindow = (typeof self === "object" && self.self === self && self) ||
+        (typeof global === "object" && global.global === global && global)
+
+    configuration = {
+        it: (globalOrWindow as any).it,
+        describe: (globalOrWindow as any).describe,
+        describeOnly: (globalOrWindow as any).describe.only,
+        itOnly: (globalOrWindow as any).it.only,
+    }
+}
+
+initializeConfiguration()

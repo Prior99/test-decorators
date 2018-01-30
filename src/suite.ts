@@ -1,28 +1,36 @@
 import "reflect-metadata"
-import { SuiteOptionsInput, parseSuiteOptions, isSuiteOptionsInput } from "./options"
+import { SuiteOptionsInput, parseSuiteOptions, isSuiteOptionsInput, SuiteOptions } from "./options"
 import { configuration } from "./configure"
 import { getTests } from "./test"
 
+export type Constructable<T> = {
+    new(): T;
+}
+
 export function suite(options?: SuiteOptionsInput): ClassDecorator
-export function suite<T extends Function>(Ctor?: Function): T
-export function suite<T extends Function>(arg1: T | SuiteOptionsInput) {
+export function suite<U, T extends Constructable<U>>(Ctor?: T): T
+export function suite<U, T extends Constructable<U>>(arg1: T | SuiteOptionsInput) {
     const { describe, describeOnly } = configuration
     if (typeof describe !== "function") {
         throw new Error("'describe' not found. Did you call 'configure'?")
     }
-    const options = isSuiteOptionsInput(arg1) ? parseSuiteOptions(arg1) : {
-        name: arg1,
-        only: false,
-    }
-    const { name, only } = options
     const decorator: ClassDecorator = Ctor => {
+        let options: SuiteOptions
+        if (isSuiteOptionsInput(arg1)) {
+            options = parseSuiteOptions(arg1)
+        } else {
+            options = { name: Ctor.name }
+        }
+        const { name, only } = options
         const describeFunction = only ? describeOnly : describe
         if (only && typeof describeOnly !== "function") {
             throw new Error("Call to 'describeOnly' occured but it was not configured.")
         }
-        const instance = new (Ctor as any)()
-        const tests = getTests(instance.constructor)
-        tests.forEach(test => test())
+        describeFunction(name, () => {
+            const instance = new (Ctor as any)()
+            const tests = getTests(instance.constructor)
+            tests.forEach(test => test(instance))
+        })
     }
     if (isSuiteOptionsInput(arg1)) {
         return decorator

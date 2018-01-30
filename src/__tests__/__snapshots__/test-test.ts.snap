@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`\`test\` calling the test when configured with \`params\` 1`] = `Array []`;
+
+exports[`\`test\` calling the test when configured without \`params\` 1`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`\`test\` with \`only\` set to \`true\` but no \`itOnly\` function provided 1`] = `"Call to 'itOnly' occured but it was not configured."`;
+
+exports[`\`test\` with \`params\` 1`] = `
+Array [
+  Array [
+    "some name #1",
+    [Function],
+  ],
+  Array [
+    "some name #2",
+    [Function],
+  ],
+  Array [
+    "some name #3",
+    [Function],
+  ],
+]
+`;
+
+exports[`\`test\` with a configuration 1`] = `
+Array [
+  Array [
+    "some name",
+    [Function],
+  ],
+]
+`;
+
+exports[`\`test\` with a name 1`] = `
+Array [
+  [Function],
+]
+`;
+
+exports[`\`test\` with no \`it\` function provided 1`] = `"'it' not found. Did you call 'configure'?"`;
+
+exports[`\`test\` without a configuration 1`] = `
+Array [
+  Array [
+    "testSomething",
+    [Function],
+  ],
+]
+`;

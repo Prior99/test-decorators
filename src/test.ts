@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { TestOptionsInput, parseTestOptions, isTestOptionsInput } from "./options"
 import { configuration } from "./configure"
 
-export type TestFunction = () => void
+export type TestFunction = (instance: any) => void
 
 export function getTests(target: Object): TestFunction[] {
     const tests = Reflect.getMetadata("test-decorator:tests", target)
@@ -46,14 +46,19 @@ export function test<Params>(
         }
         // If `params` was not specified, call `it` once with no parameters.
         if (!params) {
-            tests.push(() => {
-                itFunction(name(), async (...args: any[]) => await descriptor.value.apply(this, ...args))
+            tests.push(instance => {
+                itFunction(name(), async (...args: any[]) => await descriptor.value.apply(instance, ...args))
             })
             return descriptor
         }
         // Call `it` once for all parameters configured in `params`.
         tests.push(...params.map(param => {
-            return () => itFunction(name(param), async (...args: any[]) => await descriptor.value(param, ...args))
+            return (instance: any) => {
+                itFunction(
+                    name(param),
+                    async (...args: any[]) => await descriptor.value.apply(instance, param, ...args),
+                )
+            }
         }))
         return descriptor
     }

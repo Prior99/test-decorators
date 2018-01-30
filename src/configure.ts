@@ -8,7 +8,7 @@ export interface ConfigureOptions {
     it: It,
     itOnly?: It,
     describe: Describe,
-    describeOnly: Describe
+    describeOnly?: Describe
 }
 
 export let configuration: ConfigureOptions
@@ -21,6 +21,7 @@ declare var global: any
 
 export function initializeConfiguration() {
     // Shamelessly adapted from https://github.com/purposeindustries/window-or-global
+    // istanbul ignore next
     const globalOrWindow = (typeof self === "object" && self.self === self && self) ||
         (typeof global === "object" && global.global === global && global)
 

@@ -137,15 +137,6 @@ describe("`isTestOptionsInput`", () => {
         expect(isTestOptionsInput(class A{})).toBe(false)
     })
 
-    test("doesn't detect any instance as options", () => {
-        class A {
-            public name = "test"
-            public only = true
-            public params = [1, 2, 3]
-        }
-        expect(isTestOptionsInput(new A())).toBe(false)
-    })
-
     test("doesn't detect a method as options", () => {
         class A {
             public someMethod() { return }
@@ -194,15 +185,6 @@ describe("`isSuiteOptionsInput`", () => {
         expect(isSuiteOptionsInput(class A{})).toBe(false)
     })
 
-    test("doesn't detect any instance as options", () => {
-        class A {
-            public name = "test"
-            public only = true
-            public params = [1, 2, 3]
-        }
-        expect(isSuiteOptionsInput(new A())).toBe(false)
-    })
-
     test("doesn't detect a method as options", () => {
         class A {
             public someMethod() { return }
@@ -242,6 +224,6 @@ describe("`isSuiteOptionsInput`", () => {
     })
 
     test("detects well-defined options as options", () => {
-        expect(isSuiteOptionsInput({ only: true, name: "a suite name", params: [] })).toBe(true)
+        expect(isSuiteOptionsInput({ only: true, name: "a suite name" })).toBe(true)
     })
 })

@@ -44,6 +44,7 @@ export function parseTestOptions<Params>(options?: TestOptionsInput<Params>): Pr
 
 export function isTestOptionsInput<Params>(input: any): input is TestOptionsInput<Params> {
     const validKeys = ["name", "params", "only"]
+    if (!input) { return false }
     if (typeof input === "string") { return true }
     if (input.constructor !== Object) { return false }
     if (Object.keys(input).some(key => !validKeys.includes(key))) { return false }
@@ -83,7 +84,10 @@ export function parseSuiteOptions(options?: SuiteOptionsInput): PreparedSuiteOpt
 }
 
 export function isSuiteOptionsInput(input: any): input is SuiteOptionsInput {
+    const validKeys = ["name", "only"]
+    if (!input) { return false }
     if (typeof input === "string") { return true }
     if (typeof input === "function") { return false }
+    if (Object.keys(input).some(key => !validKeys.includes(key))) { return false }
     return true
 }

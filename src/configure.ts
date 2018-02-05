@@ -1,3 +1,8 @@
+export type BeforeEach = () => Promise<void> | void
+
+export type BeforeAll = (fn: BeforeAllFunction) => Promise<void> | void
+export type BeforeAllFunction = (done?: () => void) => Promise<void> | void
+
 export type It = (name: string, fn: ItFunction) => void
 export type ItFunction = (done?: () => void) => Promise<void> | void
 
@@ -8,6 +13,14 @@ export type DescribeFunction = () => Promise<void> | void
  * Options provided to `configure` for setting up the test framework.
  */
 export interface ConfigureOptions {
+    /**
+     * A function called before all tests
+     */
+    beforeAll?: BeforeAll,
+    /**
+     * A function called for each test
+     */
+    beforeEach?: BeforeEach,
     /**
      * The function called for each test.
      */
@@ -48,6 +61,8 @@ export function initializeConfiguration() {
         (typeof global === "object" && global.global === global && global)
 
     configuration = {
+        beforeEach: (globalOrWindow as any).beforeEach,
+        beforeAll: (globalOrWindow as any).beforeAll,
         it: (globalOrWindow as any).it,
         describe: (globalOrWindow as any).describe,
         describeOnly: (globalOrWindow as any).describe.only,

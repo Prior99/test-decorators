@@ -1,23 +1,27 @@
 import { test as testDecorator } from "../test"
+import { beforeAll as beforeAllDecorator } from "../before-all"
 import { suite } from "../suite"
-import { configure, It, Describe } from "../configure"
+import { configure, It, Describe, BeforeAll } from "../configure"
 
 describe("`suite`", () => {
     let mockIt: jest.Mock<It>
     let mockItOnly: jest.Mock<It>
     let mockDescribe: jest.Mock<Describe>
     let mockDescribeOnly: jest.Mock<Describe>
+    let mockBeforeAll: jest.Mock<BeforeAll>
 
     beforeEach(() => {
         mockIt = jest.fn()
         mockItOnly = jest.fn()
         mockDescribe = jest.fn()
         mockDescribeOnly = jest.fn()
+        mockBeforeAll = jest.fn()
         configure({
             it: mockIt,
             itOnly: mockItOnly,
             describe: mockDescribe,
             describeOnly: mockDescribeOnly,
+            beforeAll: mockBeforeAll,
         })
     })
 
@@ -77,5 +81,29 @@ describe("`suite`", () => {
         mockIt.mock.calls[0][1]()
         expect(mockTestImpl).toHaveBeenCalledTimes(1)
         expect(mockTestImpl.mock.calls[0][0].constructor).toBe(A)
+    })
+    test("beforeAll is called before the tests and sets test values reliabily", () => {
+        const mockTestImpl = jest.fn()
+        @suite
+        class A {
+            public initialConditions: string
+
+            @beforeAllDecorator
+            public setInitialConditionsOnInstance() {
+              this.initialConditions = "some initial value"
+            }
+            @testDecorator
+            public runTestWithPresetConditions() {
+              mockTestImpl(this.initialConditions)
+            }
+        }
+        expect(mockDescribe).toHaveBeenCalledTimes(1)
+        mockDescribe.mock.calls[0][1]()
+        expect(mockBeforeAll).toHaveBeenCalledTimes(1)
+        mockBeforeAll.mock.calls[0][0]()
+        expect(mockIt).toHaveBeenCalledTimes(1)
+        mockIt.mock.calls[0][1]()
+        expect(mockTestImpl).toHaveBeenCalledTimes(1)
+        expect(mockTestImpl.mock.calls[0][0]).toBe("some initial value")
     })
 })

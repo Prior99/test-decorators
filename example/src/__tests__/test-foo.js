@@ -1,4 +1,4 @@
-import { suite, test } from "../../../dist";
+import { suite, test, beforeAll } from "../../../dist";
 import { add } from "../foo";
 
 @suite

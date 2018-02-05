@@ -104,21 +104,27 @@ describe("`suite`", () => {
         mockDescribe.mock.calls[0][1]()
         expect(mockBeforeAll).toHaveBeenCalledTimes(2)
         mockBeforeAll.mock.calls[0][0]()
-        mockBeforeAll.mock.calls[1][0]()
+        mockBeforeAll.mock.calls[1][0](new A())
         expect(mockIt).toHaveBeenCalledTimes(1)
         mockIt.mock.calls[0][1]()
         expect(mockTestImpl).toHaveBeenCalledTimes(1)
         expect(mockTestImpl.mock.calls[0][0]).toBe("some initial value")
     })
     test("beforeAll is called before the tests and sets test values reliabily with inheritance", () => {
+        const mockTestImplSuper = jest.fn()
         const mockTestImpl = jest.fn()
 
+        @suite
         class SuperA {
           public initialConditions: string
 
           @beforeAllDecorator
           public setInitialConditionsOnInstance() {
-            this.initialConditions = "some initial"
+            this.initialConditions = "initial value"
+          }
+          @testDecorator
+          public runParentTestWithPresetConditions() {
+            mockTestImplSuper(this.initialConditions)
           }
         }
 
@@ -126,21 +132,27 @@ describe("`suite`", () => {
         class A extends SuperA{
             @beforeAllDecorator
             public setInitialConditionsOnInstance() {
-              this.initialConditions += " value"
+              this.initialConditions += " inherited"
             }
             @testDecorator
             public runTestWithPresetConditions() {
               mockTestImpl(this.initialConditions)
             }
         }
-        expect(mockDescribe).toHaveBeenCalledTimes(1)
+        expect(mockDescribe).toHaveBeenCalledTimes(2)
         mockDescribe.mock.calls[0][1]()
-        expect(mockBeforeAll).toHaveBeenCalledTimes(2)
+        mockDescribe.mock.calls[1][1]()
+        expect(mockBeforeAll).toHaveBeenCalledTimes(3)
         mockBeforeAll.mock.calls[0][0]()
         mockBeforeAll.mock.calls[1][0]()
-        expect(mockIt).toHaveBeenCalledTimes(1)
-        mockIt.mock.calls[0][1]()
+        mockBeforeAll.mock.calls[2][0]()
+        expect(mockIt).toHaveBeenCalledTimes(3)
+        mockIt.mock.calls[0][1](new A())
+        mockIt.mock.calls[1][1](new A())
+        mockIt.mock.calls[2][1](new A())
         expect(mockTestImpl).toHaveBeenCalledTimes(1)
-        expect(mockTestImpl.mock.calls[0][0]).toBe("some initial value")
+        expect(mockTestImpl.mock.calls[0][0]).toBe("initial value inherited")
+        expect(mockTestImplSuper).toHaveBeenCalledTimes(2)
+        expect(mockTestImplSuper.mock.calls[0][0]).toBe("initial value")
     })
 })

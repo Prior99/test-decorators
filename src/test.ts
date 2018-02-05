@@ -4,11 +4,11 @@ import { configuration } from "./configure"
 
 export type TestFunction = (instance: any) => void
 
-export function getTests(target: Object): TestFunction[] {
-    const tests = Reflect.getMetadata("test-decorator:tests", target)
+export function getTests(target: any): TestFunction[] {
+    const tests = Reflect.getMetadata(`test-decorator:tests`, target)
     if (typeof tests !== "undefined") { return tests }
     const newTests: TestFunction[] = []
-    Reflect.defineMetadata("test-decorator:tests", newTests, target)
+    Reflect.defineMetadata(`test-decorator:tests`, newTests, target)
     return newTests
 }
 
@@ -56,6 +56,8 @@ export function test<Params>(
         // If `params` was not specified, call `it` once with no parameters.
         if (!params) {
             tests.push(instance => {
+                // prevents super-class from executing the tests of extending classes
+                if (!(instance instanceof target.constructor)) return;
                 itFunction(name(), async (...args: any[]) => await descriptor.value.apply(instance, args))
             })
             return descriptor
@@ -63,6 +65,8 @@ export function test<Params>(
         // Call `it` once for all parameters configured in `params`.
         tests.push(...params.map(param => {
             return (instance: any) => {
+                // prevents super-class from executing the tests of extending classes
+                if (!(instance instanceof target.constructor)) return;
                 itFunction(
                     name(param),
                     async (...args: any[]) => await descriptor.value.apply(instance, [param, ...args]),

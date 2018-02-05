@@ -19,7 +19,7 @@ describe("`beforeAll`", () => {
             private executeSomethingBeforeAll() { return }
         }
         expect(getBeforeAlls(A).length).toBe(1)
-        getBeforeAlls(A)[0](undefined)
+        getBeforeAlls(A)[0](new A())
         expect(mockBeforeAll.mock.calls).toMatchSnapshot()
     })
 

@@ -42,14 +42,7 @@ Array [
 ]
 `;
 
-exports[`\`test\` with a configuration 1`] = `
-Array [
-  Array [
-    "some name",
-    [Function],
-  ],
-]
-`;
+exports[`\`test\` with a configuration 1`] = `Array []`;
 
 exports[`\`test\` with a name 1`] = `
 Array [
@@ -59,11 +52,4 @@ Array [
 
 exports[`\`test\` with no \`it\` function provided 1`] = `"'it' not found. Did you call 'configure'?"`;
 
-exports[`\`test\` without a configuration 1`] = `
-Array [
-  Array [
-    "testSomething",
-    [Function],
-  ],
-]
-`;
+exports[`\`test\` without a configuration 1`] = `Array []`;

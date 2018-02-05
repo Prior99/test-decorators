@@ -82,15 +82,18 @@ describe("`suite`", () => {
         expect(mockTestImpl).toHaveBeenCalledTimes(1)
         expect(mockTestImpl.mock.calls[0][0].constructor).toBe(A)
     })
-    test("beforeAll is called before the tests and sets test values reliabily", () => {
+    test("beforeAll-functions are called in proper order before the tests and sets test values reliabily", () => {
         const mockTestImpl = jest.fn()
         @suite
         class A {
             public initialConditions: string
-
             @beforeAllDecorator
-            public setInitialConditionsOnInstance() {
-              this.initialConditions = "some initial value"
+            public setInitialConditionsOnInstance1() {
+              this.initialConditions = "some initial"
+            }
+            @beforeAllDecorator
+            public setInitialConditionsOnInstance2() {
+              this.initialConditions += " value"
             }
             @testDecorator
             public runTestWithPresetConditions() {
@@ -99,8 +102,42 @@ describe("`suite`", () => {
         }
         expect(mockDescribe).toHaveBeenCalledTimes(1)
         mockDescribe.mock.calls[0][1]()
-        expect(mockBeforeAll).toHaveBeenCalledTimes(1)
+        expect(mockBeforeAll).toHaveBeenCalledTimes(2)
         mockBeforeAll.mock.calls[0][0]()
+        mockBeforeAll.mock.calls[1][0]()
+        expect(mockIt).toHaveBeenCalledTimes(1)
+        mockIt.mock.calls[0][1]()
+        expect(mockTestImpl).toHaveBeenCalledTimes(1)
+        expect(mockTestImpl.mock.calls[0][0]).toBe("some initial value")
+    })
+    test("beforeAll is called before the tests and sets test values reliabily with inheritance", () => {
+        const mockTestImpl = jest.fn()
+
+        class SuperA {
+          public initialConditions: string
+
+          @beforeAllDecorator
+          public setInitialConditionsOnInstance() {
+            this.initialConditions = "some initial"
+          }
+        }
+
+        @suite
+        class A extends SuperA{
+            @beforeAllDecorator
+            public setInitialConditionsOnInstance() {
+              this.initialConditions += " value"
+            }
+            @testDecorator
+            public runTestWithPresetConditions() {
+              mockTestImpl(this.initialConditions)
+            }
+        }
+        expect(mockDescribe).toHaveBeenCalledTimes(1)
+        mockDescribe.mock.calls[0][1]()
+        expect(mockBeforeAll).toHaveBeenCalledTimes(2)
+        mockBeforeAll.mock.calls[0][0]()
+        mockBeforeAll.mock.calls[1][0]()
         expect(mockIt).toHaveBeenCalledTimes(1)
         mockIt.mock.calls[0][1]()
         expect(mockTestImpl).toHaveBeenCalledTimes(1)

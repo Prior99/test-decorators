@@ -155,4 +155,43 @@ describe("`suite`", () => {
         expect(mockTestImplSuper).toHaveBeenCalledTimes(2)
         expect(mockTestImplSuper.mock.calls[0][0]).toBe("initial value")
     })
+    test("executing the superclass and child are only executing their own tests", () => {
+        const mockTestImpl = jest.fn()
+        @suite
+        class SuperA {
+          /**
+          * This test is necessary to create the test-array in the parent,
+          * which then is also populated with the child's tests.
+          * But since we require the test executor to be an instance of the target in the test-decorator,
+          * the child tests are not executed here.
+          **/
+          @testDecorator({
+              name: (param) => `some name #${param}`,
+              params: [
+                  { a: 1, b: 2 }
+              ],
+          })
+          protected testSomethingInTheSuperClass(...args: any[]) { }
+        }
+        @suite
+        class A extends SuperA {
+          /**
+          * This test should only be executed in the child
+          */
+          @testDecorator({
+              name: (param) => `some name #${param}`,
+              params: [
+                  { a: 1, b: 2 }
+              ],
+          })
+          protected testSomethingInTheExtendingClass(...args: any[]) { }
+        }
+        expect(mockDescribe).toHaveBeenCalledTimes(2)
+        mockDescribe.mock.calls[0][1]()
+        mockDescribe.mock.calls[1][1]()
+        // There should be two calls because the parent should not execute the childs test
+        // and the child should not execute the parent tests
+        expect(mockIt).toHaveBeenCalledTimes(2)
+        expect(mockIt.mock.calls).toMatchSnapshot()
+    })
 })

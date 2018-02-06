@@ -65,8 +65,9 @@ export function test<Params>(
         // Call `it` once for all parameters configured in `params`.
         tests.push(...params.map(param => {
             return (instance: any) => {
-                // prevents super-class from executing the tests of extending classes
-                if (!(instance instanceof target.constructor)) return;
+                // prevents super-class from executing the tests of a child class
+                // while also preventing the child class from executing parent tests
+                if (!(instance.constructor.name === target.constructor.name)) return;
                 itFunction(
                     name(param),
                     async (...args: any[]) => await descriptor.value.apply(instance, [param, ...args]),

@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`\`suite\` executing the Superclass does not execute the tests of the extended class 1`] = `
+Array [
+  Array [
+    "some name #[object Object]",
+    [Function],
+  ],
+  Array [
+    "some name #[object Object]",
+    [Function],
+  ],
+]
+`;
+
 exports[`\`suite\` with \`describe\` not being configured 1`] = `"'describe' not found. Did you call 'configure'?"`;
 
 exports[`\`suite\` with \`only\` set to \`true\` and \`describeOnly\` not being configured 1`] = `"Call to 'describeOnly' occured but it was not configured."`;

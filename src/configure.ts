@@ -14,11 +14,11 @@ export type DescribeFunction = () => Promise<void> | void
  */
 export interface ConfigureOptions {
     /**
-     * A function called before all tests
+     * The function called once per suite before all tests.
      */
     beforeAll?: BeforeAll,
     /**
-     * A function called for each test
+     * The function called once per suite before each test.
      */
     beforeEach?: BeforeEach,
     /**

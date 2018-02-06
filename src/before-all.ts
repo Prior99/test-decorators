@@ -5,14 +5,14 @@ import { configuration } from "./configure"
 export type BeforeAllFunction = (instance: any) => void
 
 export function getBeforeAlls(target: Object): BeforeAllFunction[] {
-    const beforeAlls = Reflect.getMetadata("test-decorator:beforeAll", target)
+    const beforeAlls = Reflect.getMetadata("test-decorators:beforeAlls", target)
     if (typeof beforeAlls !== "undefined") { return beforeAlls }
-    const newBeforAllContainer: BeforeAllFunction[] = []
-    Reflect.defineMetadata("test-decorator:beforeAll", newBeforAllContainer, target)
-    return newBeforAllContainer
+    const newBeforeAllContainer: BeforeAllFunction[] = []
+    Reflect.defineMetadata("test-decorators:beforeAlls", newBeforeAllContainer, target)
+    return newBeforeAllContainer
 }
 
-export type TestDecorator =
+export type BeforeAllDecorator =
     (target: Object, property: string | symbol, descriptor: PropertyDescriptor) => PropertyDescriptor
 
 export function beforeAll<Params>(
@@ -21,7 +21,7 @@ export function beforeAll<Params>(
     descriptor: PropertyDescriptor,
 ): PropertyDescriptor
 /**
- * Decorate a method with `@beforeAll` to have it run before each it-call in the suite
+ * Decorate a method with `@beforeAll` to have it run before each it-call in the suite.
  *
  * @return The decorated method.
  */
@@ -36,10 +36,10 @@ export function beforeAll<Params>(
     if (typeof beforeAllFn !== "function") {
         throw new Error("'beforeAll' not found. Did you call 'configure'?")
     }
-    const decorator: TestDecorator = (target, property, descriptor) => {
+    const decorator: BeforeAllDecorator = (target, property, descriptor) => {
         const beforeAlls = getBeforeAlls(target.constructor)
         beforeAlls.push(instance => {
-            // prevents super-class from executing the beforeAll-functions of extending classes
+            // This prevents the super-class from executing the beforeAll-functions of the extending classes.
             if (!(instance instanceof target.constructor)) { return }
             beforeAllFn(async (...args: any[]) => await descriptor.value.apply(instance, args))
         })

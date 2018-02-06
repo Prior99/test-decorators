@@ -76,7 +76,7 @@ describe("`test`", () => {
         }
         const tests = getTests(A)
         expect(tests.length).toBe(3)
-        tests.forEach(storedTest => storedTest(undefined))
+        tests.forEach(storedTest => storedTest(new A()))
         expect(mockIt.mock.calls).toMatchSnapshot()
     })
 
@@ -93,7 +93,7 @@ describe("`test`", () => {
             private testSomething(...args: any[]) { mockTestImpl(...args) }
         }
         const tests = getTests(A)
-        tests.forEach(storedTest => storedTest(undefined))
+        tests.forEach(storedTest => storedTest(new A()))
         mockIt.mock.calls.forEach(call => call[1]())
         expect(mockTestImpl.mock.calls).toMatchSnapshot()
     })
@@ -105,7 +105,7 @@ describe("`test`", () => {
             private testSomething(...args: any[]) { mockTestImpl(...args) }
         }
         const tests = getTests(A)
-        tests[0](undefined)
+        tests[0](new A())
         mockIt.mock.calls[0][1]()
         expect(mockTestImpl.mock.calls).toMatchSnapshot()
     })

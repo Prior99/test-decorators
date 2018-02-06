@@ -2,6 +2,7 @@ import "reflect-metadata"
 import { SuiteOptionsInput, parseSuiteOptions, isSuiteOptionsInput, SuiteOptions } from "./options"
 import { configuration } from "./configure"
 import { getTests } from "./test"
+import { getBeforeAlls } from "./before-all"
 
 export type Constructable<T> = {
     new(): T;
@@ -39,6 +40,8 @@ export function suite<U, T extends Constructable<U>>(arg1: T | SuiteOptionsInput
         describeFunction(name, () => {
             const instance = new (Ctor as any)()
             const tests = getTests(instance.constructor)
+            const beforeAlls = getBeforeAlls(instance.constructor)
+            beforeAlls.forEach(beforeAll => beforeAll(instance))
             tests.forEach(test => test(instance))
         })
     }

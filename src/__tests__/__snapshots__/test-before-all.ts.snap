@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`\`beforeAll\` with no \`beforeAll\` provided 1`] = `"'beforeAll' not found. Did you call 'configure'?"`;
+
+exports[`\`beforeAll\` without a configuration and without test 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
+exports[`\`beforeAll\` without any configuration and with a test 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;

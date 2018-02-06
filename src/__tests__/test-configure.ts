@@ -2,6 +2,8 @@ import { configure, configuration, initializeConfiguration } from "../configure"
 
 test("initializing the configuration in a browser", () => {
     initializeConfiguration()
+    expect(configuration.beforeEach).toBe(beforeEach)
+    expect(configuration.beforeAll).toBe(beforeAll)
     expect(configuration.it).toBe(it)
     expect(configuration.itOnly).toBe(it.only)
     expect(configuration.describe).toBe(describe)

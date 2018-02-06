@@ -8,9 +8,8 @@ describe("`beforeAll`", () => {
     let mockBeforeAll: jest.Mock<BeforeAll>
     beforeAll(() => {
         mockIt = jest.fn()
-        mockItOnly = jest.fn()
         mockBeforeAll = jest.fn()
-        configure({ it: mockIt, itOnly: mockItOnly, beforeAll: mockBeforeAll, describe })
+        configure({ it: mockIt, beforeAll: mockBeforeAll, describe })
     })
 
     test("without a configuration and without test", () => {

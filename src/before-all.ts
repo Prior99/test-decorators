@@ -40,7 +40,7 @@ export function beforeAll<Params>(
         const beforeAlls = getBeforeAlls(target.constructor)
         beforeAlls.push(instance => {
             // prevents super-class from executing the beforeAll-functions of extending classes
-            if(!(instance instanceof target.constructor)) return;
+            if (!(instance instanceof target.constructor)) { return }
             beforeAllFn(async (...args: any[]) => await descriptor.value.apply(instance, args))
         })
         return descriptor

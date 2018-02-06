@@ -57,7 +57,7 @@ export function test<Params>(
         if (!params) {
             tests.push(instance => {
                 // prevents super-class from executing the tests of extending classes
-                if (!(instance instanceof target.constructor)) return;
+                if (!(instance instanceof target.constructor)) { return }
                 itFunction(name(), async (...args: any[]) => await descriptor.value.apply(instance, args))
             })
             return descriptor
@@ -67,7 +67,7 @@ export function test<Params>(
             return (instance: any) => {
                 // prevents super-class from executing the tests of a child class
                 // while also preventing the child class from executing parent tests
-                if (!(instance.constructor.name === target.constructor.name)) return;
+                if (!(instance.constructor.name === target.constructor.name)) { return }
                 itFunction(
                     name(param),
                     async (...args: any[]) => await descriptor.value.apply(instance, [param, ...args]),

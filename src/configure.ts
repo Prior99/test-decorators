@@ -18,7 +18,7 @@ export interface ConfigureOptions {
      */
     beforeAll?: BeforeAll,
     /**
-     * The function called once per suite before each test.
+     * The function called before each test.
      */
     beforeEach?: BeforeEach,
     /**

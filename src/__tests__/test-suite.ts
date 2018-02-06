@@ -146,9 +146,9 @@ describe("`suite`", () => {
         mockBeforeAll.mock.calls[0][0]()
         mockBeforeAll.mock.calls[1][0]()
         mockBeforeAll.mock.calls[2][0]()
-        // The beforeAll in SuperA is called twice in SuperA
-        // and A and the beforeAll in A is called only in A .
-        // Thus there should be three beforeAll calls.
+        // The `beforeAll` in `SuperA` is called twice in `SuperA`
+        // and A and the `beforeAll` in A is called only in A .
+        // Thus there should be three `beforeAll` calls.
         expect(mockIt).toHaveBeenCalledTimes(3)
         mockIt.mock.calls[0][1](new A())
         mockIt.mock.calls[1][1](new A())
@@ -199,7 +199,7 @@ describe("`suite`", () => {
         const mockTestImpl = jest.fn()
         class SuperA {
             public initialConditions: string
-            // This beforeAll should be considered even though there is no suite.
+            // This `beforeAll` should be considered even though there is no suite.
             @beforeAllDecorator
             public setInitialConditionsOnParent() {
                 this.initialConditions = "initial value"

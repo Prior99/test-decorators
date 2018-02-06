@@ -155,7 +155,7 @@ describe("`suite`", () => {
         expect(mockTestImplSuper).toHaveBeenCalledTimes(2)
         expect(mockTestImplSuper.mock.calls[0][0]).toBe("initial value")
     })
-    test("executing the superclass and child are only executing their own tests", () => {
+    test("the superclass and child are only executing their own tests", () => {
         const mockTestImpl = jest.fn()
         @suite
         class SuperA {
@@ -193,5 +193,41 @@ describe("`suite`", () => {
         // and the child should not execute the parent tests
         expect(mockIt).toHaveBeenCalledTimes(2)
         expect(mockIt.mock.calls).toMatchSnapshot()
+    })
+    test("the child is inheriting the beforeAlls from the parent, even though the parent is not declared with @suite", () => {
+        const mockTestImpl = jest.fn()
+        class SuperA {
+          public initialConditions: string
+          /**
+          * This beforeAll should be considered even though there is no suite
+          */
+          @beforeAllDecorator
+          public setInitialConditionsOnParent() {
+            this.initialConditions = "initial value"
+          }
+        }
+        @suite
+        class A extends SuperA {
+          /**
+          * This test should only be executed in the child
+          */
+          @beforeAllDecorator
+          public setInitialConditionsOnInstance() {
+            this.initialConditions += " child"
+          }
+          @testDecorator
+          public runTestWithPresetConditions() {
+            mockTestImpl(this.initialConditions)
+          }
+        }
+        expect(mockDescribe).toHaveBeenCalledTimes(1)
+        mockDescribe.mock.calls[0][1]()
+        expect(mockBeforeAll).toHaveBeenCalledTimes(2)
+        mockBeforeAll.mock.calls[0][0]()
+        mockBeforeAll.mock.calls[1][0]()
+        expect(mockIt).toHaveBeenCalledTimes(1)
+        mockIt.mock.calls[0][1](new A())
+        expect(mockTestImpl).toHaveBeenCalledTimes(1)
+        expect(mockTestImpl.mock.calls[0][0]).toBe("initial value child")
     })
 })

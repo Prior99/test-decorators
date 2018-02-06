@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`\`suite\` executing the Superclass does not execute the tests of the extended class 1`] = `
+exports[`\`suite\` the superclass and child are only executing their own tests 1`] = `
 Array [
   Array [
     "some name #[object Object]",

@@ -1,4 +1,5 @@
-export type BeforeEach = () => Promise<void> | void
+export type BeforeEach = (fn: BeforeAllFunction) => Promise<void> | void
+export type BeforeEachFunction = (done?: () => void) => Promise<void> | void
 
 export type BeforeAll = (fn: BeforeAllFunction) => Promise<void> | void
 export type BeforeAllFunction = (done?: () => void) => Promise<void> | void

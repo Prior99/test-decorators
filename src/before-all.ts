@@ -21,7 +21,7 @@ export function beforeAll<Params>(
     descriptor: PropertyDescriptor,
 ): PropertyDescriptor
 /**
- * Decorate a method with `@beforeAll` to have it run before each it-call in the suite.
+ * Decorate a method with `@beforeAll` to have it run before any it-calls in the suite are executed.
  *
  * @return The decorated method.
  */

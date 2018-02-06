@@ -4,7 +4,6 @@ import { configure, It, BeforeAll } from "../configure"
 
 describe("`beforeAll`", () => {
     let mockIt: jest.Mock<It>
-    let mockItOnly: jest.Mock<It>
     let mockBeforeAll: jest.Mock<BeforeAll>
     beforeAll(() => {
         mockIt = jest.fn()

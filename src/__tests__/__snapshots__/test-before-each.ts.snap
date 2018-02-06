@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`\`beforeEach\` with no \`beforeEach\` provided 1`] = `"'beforeEach' not found. Did you call 'configure'?"`;
+
+exports[`\`beforeEach\` without a configuration and without test 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
+exports[`\`beforeEach\` without any configuration and with a test 1`] = `Array []`;

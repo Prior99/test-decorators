@@ -38,14 +38,14 @@ export function suite<U, T extends Constructable<U>>(arg1: T | SuiteOptionsInput
         if (only && typeof describeOnly !== "function") {
             throw new Error("Call to 'describeOnly' occured but it was not configured.")
         }
-        describeFunction(name, () => {
+        describeFunction(name, async () => {
             const instance = new (Ctor as any)()
             const tests = getTests(instance.constructor)
             const beforeAlls = getBeforeAlls(instance.constructor)
             const beforeEachs = getBeforeEachs(instance.constructor)
-            beforeAlls.forEach(beforeAll => beforeAll(instance))
+            beforeAlls.forEach(beforeAllFn => beforeAllFn(instance))
+            beforeEachs.forEach(beforeEachFn => beforeEachFn(instance))
             tests.forEach(test => {
-                beforeEachs.forEach(beforeEachFn => beforeEachFn(instance))
                 test(instance)
             })
         })

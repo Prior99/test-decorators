@@ -252,28 +252,18 @@ describe("`suite`", () => {
             @testDecorator
             public runTest1() {
                 testImpl1(this.preTestCondition)
-                this.preTestCondition = ""
-            }
-            @testDecorator
-            public runTest2() {
-                testImpl2(this.preTestCondition)
             }
         }
         const commonInstance = new A()
         expect(mockDescribe).toHaveBeenCalledTimes(1)
-        mockDescribe.mock.calls[0][1]()
+        mockDescribe.mock.calls[0][1](commonInstance)
         // This function should be called twice per child test.
-        expect(mockBeforeEach).toHaveBeenCalledTimes(4)
-        mockBeforeEach.mock.calls[0][0]()
-        mockBeforeEach.mock.calls[1][0]()
-        expect(mockIt).toHaveBeenCalledTimes(2)
+        expect(mockBeforeEach).toHaveBeenCalledTimes(2)
+        mockBeforeEach.mock.calls[0][0](commonInstance)
+        mockBeforeEach.mock.calls[1][0](commonInstance)
+        expect(mockIt).toHaveBeenCalledTimes(1)
         mockIt.mock.calls[0][1](commonInstance)
         expect(testImpl1).toHaveBeenCalledTimes(1)
         expect(testImpl1.mock.calls[0][0]).toBe("condition before test inherited")
-        mockBeforeEach.mock.calls[2][0]()
-        mockBeforeEach.mock.calls[3][0]()
-        mockIt.mock.calls[1][1](commonInstance)
-        expect(testImpl2).toHaveBeenCalledTimes(1)
-        expect(testImpl2.mock.calls[0][0]).toBe("condition before test inherited")
     })
 })

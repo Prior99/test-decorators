@@ -1,25 +1,25 @@
 import { suite, test, beforeAll, beforeEach } from "../../../dist";
 import { add } from "../foo";
 
-let testRuns = 0;
-let beforeRuns = 0;
+let testCalls = 0;
+let beforeCalls = 0;
 
 @suite
 class FooTest {
     
     @beforeAll
     beforeAllAdd() {
-        beforeRuns += 1
+        beforeCalls += 1
     }
   
     @beforeEach
     beforeEachAdd() {
-        beforeRuns += 1
+        beforeCalls += 1
     }
 
     @test("Adds two numbers")
     testAddNumbers() {
-        testRuns += 1
+        testCalls += 1
         expect(add(1, 1)).toBe(2)
     }
 
@@ -32,20 +32,23 @@ class FooTest {
         ]
     })
     testAddParameterized({ a, b, result }) {
-        testRuns += 1
+        testCalls += 1
         expect(add(a, b)).toBe(result)
     }
 
-    @test("The suite should have executed 5 tests and 6 befores")
+    @test("The suite should have executed 5 tests and 6 before-calls")
     testAddAfterBeforeEach() {
-        // Each parametri 
-        testRuns += 1
-        expect(testRuns).toBe(5)
-         // This is the result of:
-         //  1 beforeAll call
-         //  1 beforeEach call before the first test 
-         //  3 beforeEach calls before the second test 
-         //  1 beforeEAch call before this test.
-        expect(beforeRuns).toBe(6)        
+        testCalls += 1
+         // We expect 5 test-calls as a result of
+         //  1 test-call for the first test and
+         //  3 test-calls for the parameterized test and
+         //  1 test-call for this test.
+        expect(testCalls).toBe(5)
+         // We expect 6 before-calls as a result of
+         //  1 beforeAll-call and
+         //  1 beforeEach-call before the first test and
+         //  3 beforeEach-calls before each of the parameterized executions of the second test and
+         //  1 beforeEach-call before this test.
+        expect(beforeCalls).toBe(6)        
     }
 }

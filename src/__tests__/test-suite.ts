@@ -231,7 +231,7 @@ describe("`suite`", () => {
         expect(mockTestImpl).toHaveBeenCalledTimes(1)
         expect(mockTestImpl.mock.calls[0][0]).toBe("initial value child")
     })
-    test("the child to inherit the beforeEachs from the parent without @suite", () => {
+    test("BeforeEach calls of the child and the parent are executed before the tests", () => {
         const testImpl1 = jest.fn()
         const testImpl2 = jest.fn()
         class SuperA {
@@ -253,6 +253,10 @@ describe("`suite`", () => {
             public runTest1() {
                 testImpl1(this.preTestCondition)
             }
+            @testDecorator
+            public runTest2() {
+                testImpl1(this.preTestCondition)
+            }
         }
         const commonInstance = new A()
         expect(mockDescribe).toHaveBeenCalledTimes(1)
@@ -261,9 +265,10 @@ describe("`suite`", () => {
         expect(mockBeforeEach).toHaveBeenCalledTimes(2)
         mockBeforeEach.mock.calls[0][0](commonInstance)
         mockBeforeEach.mock.calls[1][0](commonInstance)
-        expect(mockIt).toHaveBeenCalledTimes(1)
+        expect(mockIt).toHaveBeenCalledTimes(2)
         mockIt.mock.calls[0][1](commonInstance)
-        expect(testImpl1).toHaveBeenCalledTimes(1)
+        mockIt.mock.calls[0][1](commonInstance)
         expect(testImpl1.mock.calls[0][0]).toBe("condition before test inherited")
+        expect(testImpl1.mock.calls[1][0]).toBe("condition before test inherited")
     })
 })

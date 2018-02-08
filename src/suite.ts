@@ -3,6 +3,7 @@ import { SuiteOptionsInput, parseSuiteOptions, isSuiteOptionsInput, SuiteOptions
 import { configuration } from "./configure"
 import { getTests } from "./test"
 import { getBeforeAlls } from "./before-all"
+import { getBeforeEachs, beforeEach } from "./before-each"
 
 export type Constructable<T> = {
     new(): T;
@@ -41,8 +42,12 @@ export function suite<U, T extends Constructable<U>>(arg1: T | SuiteOptionsInput
             const instance = new (Ctor as any)()
             const tests = getTests(instance.constructor)
             const beforeAlls = getBeforeAlls(instance.constructor)
-            beforeAlls.forEach(beforeAll => beforeAll(instance))
-            tests.forEach(test => test(instance))
+            const beforeEachs = getBeforeEachs(instance.constructor)
+            beforeAlls.forEach(beforeAllFn => beforeAllFn(instance))
+            beforeEachs.forEach(beforeEachFn => beforeEachFn(instance))
+            tests.forEach(test => {
+                test(instance)
+            })
         })
     }
     if (isSuiteOptionsInput(arg1)) {

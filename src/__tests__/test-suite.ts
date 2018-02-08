@@ -1,7 +1,8 @@
 import { test as testDecorator } from "../test"
 import { beforeAll as beforeAllDecorator } from "../before-all"
+import { beforeEach as beforeEachDecorator } from "../before-each"
 import { suite } from "../suite"
-import { configure, It, Describe, BeforeAll } from "../configure"
+import { configure, It, Describe, BeforeAll, BeforeEach } from "../configure"
 
 describe("`suite`", () => {
     let mockIt: jest.Mock<It>
@@ -9,6 +10,7 @@ describe("`suite`", () => {
     let mockDescribe: jest.Mock<Describe>
     let mockDescribeOnly: jest.Mock<Describe>
     let mockBeforeAll: jest.Mock<BeforeAll>
+    let mockBeforeEach: jest.Mock<BeforeEach>
 
     beforeEach(() => {
         mockIt = jest.fn()
@@ -16,12 +18,14 @@ describe("`suite`", () => {
         mockDescribe = jest.fn()
         mockDescribeOnly = jest.fn()
         mockBeforeAll = jest.fn()
+        mockBeforeEach = jest.fn()
         configure({
             it: mockIt,
             itOnly: mockItOnly,
             describe: mockDescribe,
             describeOnly: mockDescribeOnly,
             beforeAll: mockBeforeAll,
+            beforeEach: mockBeforeEach,
         })
     })
 
@@ -83,7 +87,7 @@ describe("`suite`", () => {
         expect(mockTestImpl.mock.calls[0][0].constructor).toBe(A)
     })
 
-    test("beforeAll-functions are called in proper order before the tests and sets test values reliably", () => {
+    test("beforeAll-functions are called in proper order before the tests and set test values reliably", () => {
         const mockTestImpl = jest.fn()
         @suite
         class A {
@@ -226,5 +230,45 @@ describe("`suite`", () => {
         mockIt.mock.calls[0][1](new A())
         expect(mockTestImpl).toHaveBeenCalledTimes(1)
         expect(mockTestImpl.mock.calls[0][0]).toBe("initial value child")
+    })
+    test("BeforeEach calls of the child and the parent are executed before the tests", () => {
+        const testImpl1 = jest.fn()
+        const testImpl2 = jest.fn()
+        class SuperA {
+            public preTestCondition: string
+            // This `beforeEach` should be considered even though there is no suite.
+            @beforeEachDecorator
+            public setInitialConditionsOnParent() {
+                this.preTestCondition = "condition before test"
+            }
+        }
+        @suite
+        class A extends SuperA {
+            // This beforeEach should
+            @beforeEachDecorator
+            public setInitialConditionsOnInstance() {
+                this.preTestCondition += " inherited"
+            }
+            @testDecorator
+            public runTest1() {
+                testImpl1(this.preTestCondition)
+            }
+            @testDecorator
+            public runTest2() {
+                testImpl1(this.preTestCondition)
+            }
+        }
+        const commonInstance = new A()
+        expect(mockDescribe).toHaveBeenCalledTimes(1)
+        mockDescribe.mock.calls[0][1](commonInstance)
+        // This function should be called twice per child test.
+        expect(mockBeforeEach).toHaveBeenCalledTimes(2)
+        mockBeforeEach.mock.calls[0][0](commonInstance)
+        mockBeforeEach.mock.calls[1][0](commonInstance)
+        expect(mockIt).toHaveBeenCalledTimes(2)
+        mockIt.mock.calls[0][1](commonInstance)
+        mockIt.mock.calls[0][1](commonInstance)
+        expect(testImpl1.mock.calls[0][0]).toBe("condition before test inherited")
+        expect(testImpl1.mock.calls[1][0]).toBe("condition before test inherited")
     })
 })

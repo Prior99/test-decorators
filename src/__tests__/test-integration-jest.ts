@@ -4,9 +4,8 @@ import { suite, test, beforeAll, beforeEach, afterAll, afterEach } from "../inde
 class SuperA {
     protected executedFunctions: string[] = []
     protected isSuperClass = true
-
     protected preTestCondition: string
-    // This `afterEach` should be considered even though there is no suite.
+
     @beforeEach
     protected executeParentBeforeEach() {
         this.executedFunctions.push("PARENT BEFORE EACH")
@@ -57,7 +56,7 @@ class A extends SuperA {
     @afterAll
     protected executeParentAfterAll() {
         this.executedFunctions.push("CHILD AFTER ALL")
-        expect(this.executedFunctions).toMatchSnapshot()        
+        expect(this.executedFunctions).toMatchSnapshot()
     }
     @afterEach
     protected executeParentAfterEach() {

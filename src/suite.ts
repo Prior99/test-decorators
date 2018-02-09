@@ -3,7 +3,9 @@ import { SuiteOptionsInput, parseSuiteOptions, isSuiteOptionsInput, SuiteOptions
 import { configuration } from "./configure"
 import { getTests } from "./test"
 import { getBeforeAlls } from "./before-all"
+import { getAfterAlls } from "./after-all"
 import { getBeforeEachs, beforeEach } from "./before-each"
+import { getAfterEachs, afterEach } from "./after-each"
 
 export type Constructable<T> = {
     new(): T;
@@ -43,11 +45,15 @@ export function suite<U, T extends Constructable<U>>(arg1: T | SuiteOptionsInput
             const tests = getTests(instance.constructor)
             const beforeAlls = getBeforeAlls(instance.constructor)
             const beforeEachs = getBeforeEachs(instance.constructor)
+            const afterAlls = getAfterAlls(instance.constructor)
+            const afterEachs = getAfterEachs(instance.constructor)
             beforeAlls.forEach(beforeAllFn => beforeAllFn(instance))
             beforeEachs.forEach(beforeEachFn => beforeEachFn(instance))
             tests.forEach(test => {
                 test(instance)
             })
+            afterAlls.forEach(afterAllFn => afterAllFn(instance))
+            afterEachs.forEach(afterEachFn => afterEachFn(instance))
         })
     }
     if (isSuiteOptionsInput(arg1)) {

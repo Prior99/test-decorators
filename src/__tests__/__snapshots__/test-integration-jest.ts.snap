@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`A Does execute parameterized test Nr.2 in child in correct order 1`] = `
+Array [
+  "PARENT BEFORE ALL",
+  "CHILD BEFORE ALL",
+  "PARENT BEFORE EACH",
+  "CHILD BEFORE EACH",
+  "PARENT TEST",
+  "CHILD AFTER EACH",
+  "PARENT AFTER EACH",
+  "PARENT BEFORE EACH",
+  "CHILD BEFORE EACH",
+  "CHILD TEST PARAMS 1",
+  "CHILD AFTER EACH",
+  "PARENT AFTER EACH",
+  "PARENT BEFORE EACH",
+  "CHILD BEFORE EACH",
+  "CHILD TEST PARAMS 2",
+  "CHILD AFTER EACH",
+  "PARENT AFTER EACH",
+  "CHILD AFTER ALL",
+]
+`;

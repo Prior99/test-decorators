@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`\`afterEach\` with no \`afterEach\` provided 1`] = `"'afterEach' not found. Did you call 'configure'?"`;
+
+exports[`\`afterEach\` without a configuration and without test 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
+exports[`\`afterEach\` without any configuration and with a test 1`] = `Array []`;

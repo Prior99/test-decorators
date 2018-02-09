@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`\`afterAll\` with no \`afterAll\` provided 1`] = `"'afterAll' not found. Did you call 'configure'?"`;
+
+exports[`\`afterAll\` without a configuration and without test 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
+exports[`\`afterAll\` without any configuration and with a test 1`] = `Array []`;

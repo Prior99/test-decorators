@@ -10,10 +10,4 @@ Array [
 ]
 `;
 
-exports[`\`beforeAll\` without any configuration and with a test 1`] = `
-Array [
-  Array [
-    [Function],
-  ],
-]
-`;
+exports[`\`beforeAll\` without any configuration and with a test 1`] = `Array []`;

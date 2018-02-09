@@ -1,3 +1,10 @@
+
+export type AfterEach = (fn: AfterEachFunction) => Promise<void> | void
+export type AfterEachFunction = (done?: () => void) => Promise<void> | void
+
+export type AfterAll = (fn: AfterAllFunction) => Promise<void> | void
+export type AfterAllFunction = (done?: () => void) => Promise<void> | void
+
 export type BeforeEach = (fn: BeforeEachFunction) => Promise<void> | void
 export type BeforeEachFunction = (done?: () => void) => Promise<void> | void
 
@@ -22,6 +29,14 @@ export interface ConfigureOptions {
      * The function called before each test.
      */
     beforeEach?: BeforeEach,
+    /**
+     * The function called once per suite after all tests.
+     */
+    afterAll?: AfterAll,
+    /**
+     * The function called after each test.
+     */
+    afterEach?: AfterEach,
     /**
      * The function called for each test.
      */
@@ -62,6 +77,8 @@ export function initializeConfiguration() {
         (typeof global === "object" && global.global === global && global)
 
     configuration = {
+        afterEach: (globalOrWindow as any).afterEach,
+        afterAll: (globalOrWindow as any).afterAll,
         beforeEach: (globalOrWindow as any).beforeEach,
         beforeAll: (globalOrWindow as any).beforeAll,
         it: (globalOrWindow as any).it,

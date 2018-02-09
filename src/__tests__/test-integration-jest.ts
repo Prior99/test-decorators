@@ -26,18 +26,18 @@ class SuperA {
     private testParent(run: number) {
         this.executedFunctions.push("PARENT TEST")
         if (this.isSuperClass){
-            // If this test is being executed as a super-class test
-            // it must be the `3rd` function called after
-            // 1 the parent's beforeAll call
-            // 2 the parent's beforeEach call
+            // If this test is being executed as a `super-class` test,
+            // then it must be the `3rd` function called after
+            // 1st the parent's beforeAll call and
+            // 2nd the parent's beforeEach call.
             expect(3).toBe(this.executedFunctions.length)
         } else {
-            // If this test is being executed as a child-class test,
-            // it must be the `3rd` function called after
-            // 1 the parent's beforeAll call
-            // 2 the parent's beforeEach call
-            // 3 the child's beforeAll call
-            // 4 the child's beforeEach call
+            // If this test is being executed as a `child-class` test,
+            // then it must be the `5th` function called after
+            // 1st the parent's beforeAll call and
+            // 2nd the parent's beforeEach call and
+            // 3rd the child's beforeAll call and
+            // 4th the child's beforeEach call.
             expect(5).toBe(this.executedFunctions.length)
         }
     }
@@ -53,16 +53,17 @@ class A extends SuperA {
     protected executeParentBeforeAll() {
         this.executedFunctions.push("CHILD BEFORE ALL")
     }
-    @afterAll
-    protected executeParentAfterAll() {
-        this.executedFunctions.push("CHILD AFTER ALL")
-        expect(this.executedFunctions).toMatchSnapshot()
-    }
     @afterEach
     protected executeParentAfterEach() {
         this.executedFunctions.push("CHILD AFTER EACH")
     }
+    @afterAll
+    protected executeParentAfterAll() {
+        this.executedFunctions.push("CHILD AFTER ALL")
+        // Match the executed-functions array against the expected execution order.
 
+        expect(this.executedFunctions).toMatchSnapshot()
+    }
     @test({
         name: (testNr) => `Does execute parameterized test Nr.${testNr} in child in correct order`,
         params: [1,2],

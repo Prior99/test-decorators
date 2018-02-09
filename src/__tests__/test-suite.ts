@@ -122,7 +122,7 @@ describe("`suite`", () => {
         expect(mockTestImpl.mock.calls[0][0]).toBe("some initial value")
     })
 
-    test("beforeAll is called before the tests and sets test values reliabily with inheritance", () => {
+    test("beforeAll is called before the tests and sets test values reliably with inheritance", () => {
         const mockTestImplSuper = jest.fn()
         const mockTestImpl = jest.fn()
 

@@ -6,6 +6,8 @@
 
 Test decorators provides a set of decorators to run javascript unit tests with.
 
+Please also refer to the **[Documentation](https://prior99.github.io/test-decorators/docs/index.html)**.
+
 ## Table of contents
 
  * [Test Decorators](#test-decorators)
